@@ -245,42 +245,63 @@ namespace pet911_backend.Controllers
             //    return Ok(rol);
             //}
         }
+
+        [HttpGet("Admins")]
+        public string GetAdmins()
+        {
+            List<Session> sessions = _context.Session.ToList();
+            List<string> adminEmails = new List<string>();
+
+            foreach (Session session in sessions)
+            {
+                User user = _context.User.FirstOrDefault(u => u.Email == session.Email);
+
+                if (user != null)
+                {
+                    var role = _context.Role.Find(user.IdRole);
+
+                    if (role != null && role.RoleType == "Admin")
+                    {
+                        adminEmails.Add(user.Email);
+                    }
+                }
+            }
+
+            return JsonConvert.SerializeObject(adminEmails);
+        }
+
         [HttpGet("Notification")]
         public string PostUser()
         {
-            List<Session> ses = _context.Session.ToList();
-            
-            var sel = ses.Select(s => new
-            {
-                s.Email
-            });
-            string retMessage = string.Empty;
-            foreach (Session s in ses)
-            {
-                User use = _context.User.Where(us=>us.Email==s.Email).FirstOrDefault();
+            Session specificSession = _context.Session.FirstOrDefault(s => s.Email == "admin@admin.com");
 
-                var role = _context.Role.Find(use.IdRole);
-                if(role.RoleType == "Admin")
+            if (specificSession != null)
+            {
+                User user = _context.User.FirstOrDefault(us => us.Email == specificSession.Email);
+
+                if (user != null)
                 {
-                   
-                    Message mew = new Message();
-                    mew.Information = "Un paciente esta en camino";
-                    try
+                    var role = _context.Role.Find(user.IdRole);
+
+                    if (role != null && role.RoleType == "Admin")
                     {
-                        _hubContext.Clients.Client(s.Id).BroadcastMessage(mew);
-                       retMessage = "Success";
+                        Message mew = new Message();
+                        mew.Information = "Un paciente esta en camino";
+
+                        try
+                        {
+                            _hubContext.Clients.Client(specificSession.Id).BroadcastMessage(mew);
+                            return "Success";
+                        }
+                        catch (Exception e)
+                        {
+                            return e.ToString();
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        retMessage = e.ToString();
-                    }
-                    return retMessage;
                 }
-
             }
-            return retMessage;
 
-
+            return "Admin session not found or user is not an admin";
         }
         [HttpGet("Mesa/{id}")]
         public ActionResult MessageUser(string id)

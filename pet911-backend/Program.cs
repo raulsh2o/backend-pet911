@@ -64,8 +64,7 @@ builder.Services.AddAuthentication(x =>
         };
     });
 builder.Services.AddSignalR();
-builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 var app = builder.Build();
