@@ -270,38 +270,40 @@ namespace pet911_backend.Controllers
             return JsonConvert.SerializeObject(adminEmails);
         }
 
-        [HttpGet("Notification")]
-        public string PostUser()
+        [HttpPost("Notification")]
+        public string PostUser([FromBody] EmailNotification model)
         {
-            Session specificSession = _context.Session.FirstOrDefault(s => s.Email == "admin@admin.com");
+            List<Session> ses = _context.Session.ToList();
 
-            if (specificSession != null)
+            var sel = ses.Select(s => new
             {
-                User user = _context.User.FirstOrDefault(us => us.Email == specificSession.Email);
+                s.Email
+            });
+            string retMessage = string.Empty;
+            foreach (Session s in ses)
+            {
+                User use = _context.User.Where(us => us.Email == s.Email).FirstOrDefault();
 
-                if (user != null)
+                var role = _context.Role.Find(use.IdRole);
+                if (role.RoleType == "Admin")
                 {
-                    var role = _context.Role.Find(user.IdRole);
 
-                    if (role != null && role.RoleType == "Admin")
+                    Message mew = new Message();
+                    mew.Information = model.Email;
+                    try
                     {
-                        Message mew = new Message();
-                        mew.Information = "Un paciente esta en camino";
-
-                        try
-                        {
-                            _hubContext.Clients.Client(specificSession.Id).BroadcastMessage(mew);
-                            return "Success";
-                        }
-                        catch (Exception e)
-                        {
-                            return e.ToString();
-                        }
+                        _hubContext.Clients.Client(s.Id).BroadcastMessage(mew);
+                        retMessage = "Success";
                     }
+                    catch (Exception e)
+                    {
+                        retMessage = e.ToString();
+                    }
+                    return retMessage;
                 }
-            }
 
-            return "Admin session not found or user is not an admin";
+            }
+            return retMessage;
         }
         [HttpGet("Mesa/{id}")]
         public ActionResult MessageUser(string id)
