@@ -62,7 +62,7 @@ namespace pet911_backend.Migrations
             modelBuilder.Entity("pet911_backend.Models.Notification", b =>
             {
                 b.Property<string>("Id")
-                    .HasColumnType("int");
+                    .HasColumnType("varchar(36)");
 
                 b.Property<string>("Email_rx")
                     .IsRequired()

@@ -301,7 +301,7 @@ namespace pet911_backend.Controllers
                     .Where(n => n.Email_rx == model.Email_rx)
                     .ToList();
 
-            List<string> messages = notification.Select(n => n.Message).ToList();
+            List<string> messages = notification.Select(n => n.Email_tx).ToList();
 
             return JsonConvert.SerializeObject(messages);
         }
@@ -339,6 +339,14 @@ namespace pet911_backend.Controllers
                     }
                     return retMessage;
                 }
+                Notification notification = new Notification();
+                notification.Id = Guid.NewGuid().ToString();
+                notification.Email_rx = model.Email_rx;
+                notification.Email_tx = model.Email_tx;
+                notification.Message = "Mensaje de emergencia!"; ;
+
+                _context.Notification.Add(notification);
+                _context.SaveChanges();
 
             }
             return retMessage;
