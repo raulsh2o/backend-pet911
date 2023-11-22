@@ -298,7 +298,7 @@ namespace pet911_backend.Controllers
         public string PostAdminNotifications([FromBody] EmailNotification model)
         {
             List<Notification> notification = _context.Notification
-                    .Where(n => n.Email_rx == model.Email)
+                    .Where(n => n.Email_rx == model.Email_rx)
                     .ToList();
 
             List<string> messages = notification.Select(n => n.Message).ToList();
@@ -325,7 +325,9 @@ namespace pet911_backend.Controllers
                 {
 
                     Message mew = new Message();
-                    mew.Information = model.Email;
+                    mew.Email_rx = model.Email_rx;
+                    mew.Email_tx = model.Email_tx;
+                    mew.Text = "Mensaje de emergencia!";
                     try
                     {
                         _hubContext.Clients.Client(s.Id).BroadcastMessage(mew);
@@ -348,7 +350,7 @@ namespace pet911_backend.Controllers
             try
             {
                 Message mew = new Message();
-                mew.Information = "Un paciente esta en camino";
+                mew.Text = "Un paciente esta en camino";
                 _hubContext.Clients.AllExcept(id).BroadcastMessage(mew);
                 return Ok ( new { mesagge = "Un paciente esta en camino" });
             }

@@ -2,6 +2,8 @@
 {
     public class Message
     {
-        public string Information { get; set; }
+        public string Email_rx { get; set; }
+        public string Email_tx { get; set; }
+        public string Text { get; set; }
     }
 }
