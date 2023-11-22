@@ -59,6 +59,27 @@ namespace pet911_backend.Migrations
 
                     b.ToTable("Pet", (string)null);
                 });
+            modelBuilder.Entity("pet911_backend.Models.Notification", b =>
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("int");
+
+                b.Property<string>("Email_rx")
+                    .IsRequired()
+                    .HasColumnType("varchar(100)");
+
+                b.Property<string>("Email_rx")
+                    .HasColumnType("varchar(100)");
+
+                b.Property<string>("Message")
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+
+                b.HasKey("Id")
+                    .HasName("Primary");
+
+                b.ToTable("Notification", (string)null);
+            });
 
             modelBuilder.Entity("pet911_backend.Models.Role", b =>
                 {

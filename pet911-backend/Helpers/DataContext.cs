@@ -19,6 +19,8 @@ namespace pet911_backend.Helpers
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Pet> Pet { get; set; }
+
+        public DbSet<Notification> Notification { get; set; }
         public DbSet<Service> Service { get; set; }
 
         public DbSet<Session> Session { get; set; }

@@ -270,6 +270,42 @@ namespace pet911_backend.Controllers
             return JsonConvert.SerializeObject(adminEmails);
         }
 
+        [HttpGet("Clients")]
+        public string GetClients()
+        {
+            List<Session> sessions = _context.Session.ToList();
+            List<string> clientEmails = new List<string>();
+
+            foreach (Session session in sessions)
+            {
+                User user = _context.User.FirstOrDefault(u => u.Email == session.Email);
+
+                if (user != null)
+                {
+                    var role = _context.Role.Find(user.IdRole);
+
+                    if (role != null && role.RoleType == "Usuario")
+                    {
+                        clientEmails.Add(user.Email);
+                    }
+                }
+            }
+
+            return JsonConvert.SerializeObject(clientEmails);
+        }
+
+        [HttpPost("GetNotifications")]
+        public string PostAdminNotifications([FromBody] EmailNotification model)
+        {
+            List<Notification> notification = _context.Notification
+                    .Where(n => n.Email_rx == model.Email)
+                    .ToList();
+
+            List<string> messages = notification.Select(n => n.Message).ToList();
+
+            return JsonConvert.SerializeObject(messages);
+        }
+
         [HttpPost("Notification")]
         public string PostUser([FromBody] EmailNotification model)
         {
