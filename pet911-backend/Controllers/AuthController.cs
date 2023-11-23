@@ -311,9 +311,15 @@ namespace pet911_backend.Controllers
                     .Where(n => n.Email_rx == model.Email_rx)
                     .ToList();
 
-            List<string> messages = notification.Select(n => n.Email_tx).ToList();
+            //List<string> messages = notification.Select(n => n.Email_tx).ToList();
+            //return JsonConvert.SerializeObject(messages);
+            var notificationInfos = notification.Select(n => new Notification
+            {
+                Id = n.Id,
+                Email_tx = n.Email_tx // Reemplaza con el nombre de la propiedad correcto si es diferente
+            }).ToArray();
 
-            return JsonConvert.SerializeObject(messages);
+            return JsonConvert.SerializeObject(notificationInfos);
         }
 
         [HttpPost("ConfirfNotification")]
@@ -366,7 +372,10 @@ namespace pet911_backend.Controllers
             _context.Notification.Add(notification);
             _context.SaveChanges();
 
-            List<Session> ses = _context.Session.ToList();
+            //List<Session> ses = _context.Session.ToList();
+            List<Session> ses = _context.Session
+            .Where(s => s.Email == model.Email_rx)
+            .ToList();
 
             var sel = ses.Select(s => new
             {
