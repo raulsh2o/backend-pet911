@@ -245,6 +245,26 @@ namespace pet911_backend.Controllers
             //    return Ok(rol);
             //}
         }
+        [HttpDelete("Notification/{id}")]
+        public IActionResult DeleteNotification(string id)
+        {
+            try
+            {
+                var notification = _context.Notification.Find(id);
+                if (notification == null)
+                {
+                    return BadRequest("No se econtro la sesion");
+
+                }
+                _context.Notification.Remove(notification);
+                _context.SaveChanges();
+                return Ok("Se elimino la notificacion");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("Admins")]
         public string GetAdmins()
@@ -337,6 +357,15 @@ namespace pet911_backend.Controllers
         [HttpPost("Notification")]
         public string PostUser([FromBody] EmailNotification model)
         {
+            Notification notification = new Notification();
+            notification.Id = Guid.NewGuid().ToString();
+            notification.Email_rx = model.Email_rx;
+            notification.Email_tx = model.Email_tx;
+            notification.Message = "Mensaje de emergencia!"; ;
+
+            _context.Notification.Add(notification);
+            _context.SaveChanges();
+
             List<Session> ses = _context.Session.ToList();
 
             var sel = ses.Select(s => new
@@ -367,14 +396,6 @@ namespace pet911_backend.Controllers
                     }
                     return retMessage;
                 }
-                Notification notification = new Notification();
-                notification.Id = Guid.NewGuid().ToString();
-                notification.Email_rx = model.Email_rx;
-                notification.Email_tx = model.Email_tx;
-                notification.Message = "Mensaje de emergencia!"; ;
-
-                _context.Notification.Add(notification);
-                _context.SaveChanges();
 
             }
             return retMessage;
