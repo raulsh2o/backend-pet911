@@ -325,7 +325,10 @@ namespace pet911_backend.Controllers
         [HttpPost("ConfirfNotification")]
         public string PostConfirmNotification([FromBody] EmailNotification model)
         {
-            List<Session> ses = _context.Session.ToList();
+            //List<Session> ses = _context.Session.ToList();
+            List<Session> ses = _context.Session
+            .Where(s => s.Email == model.Email_rx)
+            .ToList();
 
             var sel = ses.Select(s => new
             {
