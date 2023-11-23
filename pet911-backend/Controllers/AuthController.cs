@@ -270,6 +270,19 @@ namespace pet911_backend.Controllers
             return JsonConvert.SerializeObject(adminEmails);
         }
 
+        [HttpPost("GetSession")]
+        public string PostAdminNotifications([FromBody] Email model)
+        {
+            List<Session> session = _context.Session
+                    .Where(n => n.Email == model.email)
+                    .ToList();
+
+            List<string> messages = session.Select(n => n.Id).ToList();
+
+            return JsonConvert.SerializeObject(messages);
+
+        }
+
 
         [HttpPost("GetNotifications")]
         public string PostAdminNotifications([FromBody] EmailNotification model)
