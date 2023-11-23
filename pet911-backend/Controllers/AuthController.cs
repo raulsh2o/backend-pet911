@@ -270,29 +270,6 @@ namespace pet911_backend.Controllers
             return JsonConvert.SerializeObject(adminEmails);
         }
 
-        [HttpGet("Clients")]
-        public string GetClients()
-        {
-            List<Session> sessions = _context.Session.ToList();
-            List<string> clientEmails = new List<string>();
-
-            foreach (Session session in sessions)
-            {
-                User user = _context.User.FirstOrDefault(u => u.Email == session.Email);
-
-                if (user != null)
-                {
-                    var role = _context.Role.Find(user.IdRole);
-
-                    if (role != null && role.RoleType == "Usuario")
-                    {
-                        clientEmails.Add(user.Email);
-                    }
-                }
-            }
-
-            return JsonConvert.SerializeObject(clientEmails);
-        }
 
         [HttpPost("GetNotifications")]
         public string PostAdminNotifications([FromBody] EmailNotification model)
@@ -304,6 +281,44 @@ namespace pet911_backend.Controllers
             List<string> messages = notification.Select(n => n.Email_tx).ToList();
 
             return JsonConvert.SerializeObject(messages);
+        }
+
+        [HttpPost("ConfirfNotification")]
+        public string PostConfirmNotification([FromBody] EmailNotification model)
+        {
+            List<Session> ses = _context.Session.ToList();
+
+            var sel = ses.Select(s => new
+            {
+                s.Email
+            });
+            string retMessage = string.Empty;
+            foreach (Session s in ses)
+            {
+                User use = _context.User.Where(us => us.Email == s.Email).FirstOrDefault();
+
+                var role = _context.Role.Find(use.IdRole);
+                if (role.RoleType == "Usuario")
+                {
+
+                    Message mew = new Message();
+                    mew.Email_rx = model.Email_rx;
+                    mew.Email_tx = model.Email_tx;
+                    mew.Text = "Emergencia Aceptada!";
+                    try
+                    {
+                        _hubContext.Clients.Client(s.Id).BroadcastMessage(mew);
+                        retMessage = "Success";
+                    }
+                    catch (Exception e)
+                    {
+                        retMessage = e.ToString();
+                    }
+                    return retMessage;
+                }
+
+            }
+            return retMessage;
         }
 
         [HttpPost("Notification")]
