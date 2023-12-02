@@ -80,6 +80,20 @@ namespace pet911_backend.Migrations
 
                 b.ToTable("Notification", (string)null);
             });
+            modelBuilder.Entity("pet911_backend.Models.Tos", b =>
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("varchar(36)");
+
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("varchar(100)");
+
+                b.HasKey("Id")
+                    .HasName("Primary");
+
+                b.ToTable("Tos", (string)null);
+            });
 
             modelBuilder.Entity("pet911_backend.Models.Role", b =>
                 {

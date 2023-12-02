@@ -21,6 +21,7 @@ namespace pet911_backend.Helpers
         public DbSet<Pet> Pet { get; set; }
 
         public DbSet<Notification> Notification { get; set; }
+        public DbSet<Tos> Tos { get; set; }
         public DbSet<Service> Service { get; set; }
 
         public DbSet<Session> Session { get; set; }

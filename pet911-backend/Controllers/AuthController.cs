@@ -363,6 +363,19 @@ namespace pet911_backend.Controllers
             return retMessage;
         }
 
+        [HttpPost("aceptTos")]
+        public string PostTos([FromBody] Email model)
+        {
+            Tos tos = new Tos();
+            tos.Id = Guid.NewGuid().ToString();
+            tos.Email = model.email;
+
+            _context.Tos.Add(tos);
+            _context.SaveChanges();
+
+            return "ok";
+        }
+
         [HttpPost("Notification")]
         public string PostUser([FromBody] EmailNotification model)
         {
