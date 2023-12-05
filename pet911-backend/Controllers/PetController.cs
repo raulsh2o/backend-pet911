@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using pet911_backend.Helpers;
 using pet911_backend.Models;
 using pet911_backend.Models.Dto;
@@ -78,6 +79,7 @@ namespace pet911_backend.Controllers
         [HttpPost]
         public ActionResult<Pet> PostPet([FromBody] PetDto model)
         {
+            User use = _context.User.Where(us => us.Email == model.Email).FirstOrDefault();
             try
             {
                 Pet newPet = new Pet();
@@ -87,7 +89,7 @@ namespace pet911_backend.Controllers
                 newPet.Sex = model.Sex;
                 newPet.Race = model.Race;
                 newPet.Allergies = model.Allergies;
-                newPet.IdUser = model.IdUser;
+                newPet.IdUser = use.Id;
 
                 _context.Pet.Add(newPet);
                 _context.SaveChanges();
@@ -103,7 +105,8 @@ namespace pet911_backend.Controllers
         [HttpPut("{id}")]
         public ActionResult<Pet> PutPet(string id, [FromBody] PetDto model)
         {
-             var oldPet = _context.Pet.Find(id);
+            User use = _context.User.Where(us => us.Email == model.Email).FirstOrDefault();
+            var oldPet = _context.Pet.Find(id);
             if(oldPet == null)
             {
                 return BadRequest("No existe");
@@ -115,7 +118,7 @@ namespace pet911_backend.Controllers
                 oldPet.Sex = model.Sex;
                 oldPet.Race = model.Race;
                 oldPet.Allergies = model.Allergies;
-                oldPet.IdUser = model.IdUser;
+                oldPet.IdUser = use.Id;
 
                 _context.SaveChanges();
                 return Ok(oldPet);

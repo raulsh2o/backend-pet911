@@ -7,6 +7,6 @@
         public string Sex { get; set; }
         public string? Race { get; set; }
         public string? Allergies { get; set; }
-        public string? IdUser { get; set; }
+        public string? Email { get; set; }
     }
 }
