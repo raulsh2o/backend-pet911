@@ -56,7 +56,7 @@ namespace pet911_backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        
         [HttpGet("ByUser/{id}")]
         public ActionResult<Pet> GetPetsByUser(string id)
         {

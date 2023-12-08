@@ -94,6 +94,37 @@ namespace pet911_backend.Migrations
 
                 b.ToTable("Tos", (string)null);
             });
+            modelBuilder.Entity("pet911_backend.Models.Adopt", b =>
+            {
+                b.Property<string>("Id")
+                        .HasColumnType("varchar(36)");
+
+                b.Property<string>("Age")
+                    .IsRequired()
+                    .HasColumnType("varchar(100)");
+
+                b.Property<string>("Allergies")
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("varchar(100)");
+
+                b.Property<string>("Race")
+                    .HasColumnType("varchar(100)");
+
+                b.Property<string>("Sex")
+                .IsRequired()
+                .HasColumnType("varchar(100)");
+
+                b.HasKey("Id")
+                    .HasName("Primary");
+
+                b.ToTable("Adopt", (string)null);
+            });
 
             modelBuilder.Entity("pet911_backend.Models.Role", b =>
                 {
