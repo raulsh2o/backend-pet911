@@ -8,5 +8,6 @@
         public string? Race { get; set; }
         public string? Allergies { get; set; }
         public string? Email { get; set; }
+        public string? Image { get; set; }
     }
 }

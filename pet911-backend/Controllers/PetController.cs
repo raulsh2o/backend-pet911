@@ -89,6 +89,7 @@ namespace pet911_backend.Controllers
                 newPet.Sex = model.Sex;
                 newPet.Race = model.Race;
                 newPet.Allergies = model.Allergies;
+                newPet.Image = model.Image;
                 newPet.IdUser = use.Id;
 
                 _context.Pet.Add(newPet);
