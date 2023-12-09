@@ -123,6 +123,9 @@ namespace pet911_backend.Migrations
                 .IsRequired()
                 .HasColumnType("varchar(100)");
 
+                b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
                 b.HasKey("Id")
                     .HasName("Primary");
 

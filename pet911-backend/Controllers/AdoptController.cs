@@ -22,30 +22,18 @@ namespace pet911_backend.Controllers
     public class AdoptController : ControllerBase
     {
         private readonly DataContext _context;
-
-
-        [HttpGet("AdopList")]
-        public string GetAdmins()
+        public AdoptController(DataContext context)
         {
-            List<Session> sessions = _context.Session.ToList();
-            List<string> adminEmails = new List<string>();
+            _context = context;
+        }
+        [HttpGet("AdopList")]
+        public string GetAdopt()
+        {
 
-            foreach (Session session in sessions)
-            {
-                User user = _context.User.FirstOrDefault(u => u.Email == session.Email);
+            List<Adopt> adopt = _context.Adopt.ToList();
 
-                if (user != null)
-                {
-                    var role = _context.Role.Find(user.IdRole);
 
-                    if (role != null && role.RoleType == "Admin")
-                    {
-                        adminEmails.Add(user.Email);
-                    }
-                }
-            }
-
-            return JsonConvert.SerializeObject(adminEmails);
+            return JsonConvert.SerializeObject(adopt);
         }
     }
 }
