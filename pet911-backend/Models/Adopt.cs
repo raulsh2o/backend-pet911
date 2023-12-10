@@ -10,5 +10,6 @@
         public string? Allergies { get; set; }
         public string? Notes { get; set; }
         public string? Image { get; set; }
+        public string? Type { get; set; }
     }
 }
