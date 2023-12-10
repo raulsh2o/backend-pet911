@@ -71,7 +71,7 @@ namespace pet911_backend.Migrations
                     .IsRequired()
                     .HasColumnType("varchar(100)");
 
-                b.Property<string>("Email_rx")
+                b.Property<string>("Email_tx")
                     .HasColumnType("varchar(100)");
 
                 b.Property<string>("Message")
