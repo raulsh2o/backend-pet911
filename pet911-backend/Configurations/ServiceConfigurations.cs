@@ -15,7 +15,7 @@ namespace pet911_backend.Configurations
                 .IsRequired()
                 .HasColumnType("varchar(36)");
 
-            builder.ToTable("Service");
+            builder.ToTable("service");
 
             builder.HasIndex(x => x.Id)
                 .HasDatabaseName("FK_IndexIdService");

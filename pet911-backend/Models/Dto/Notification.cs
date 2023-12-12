@@ -1,5 +1,8 @@
-﻿namespace pet911_backend.Models.Dto
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace pet911_backend.Models.Dto
 {
+    [Table("notification")]
     public class Notification
     {
         public string? Id { get; set; }

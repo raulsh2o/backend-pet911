@@ -4,9 +4,9 @@ using pet911_backend.Models;
 
 namespace pet911_backend.Configurations
 {
-    public class PetConfigurations : IEntityTypeConfiguration<Pet>
+    public class AdoptConfigurations
     {
-        public void Configure(EntityTypeBuilder<Pet> builder)
+        public void Configure(EntityTypeBuilder<Adopt> builder)
         {
             builder.HasKey(x => x.Id)
                 .HasName("Primary");
@@ -15,7 +15,7 @@ namespace pet911_backend.Configurations
                 .IsRequired()
                 .HasColumnType("varchar(36)");
 
-            builder.ToTable("pet");
+            builder.ToTable("adopt");
 
             builder.HasIndex(x => x.Id)
                 .HasDatabaseName("FK_IndexIdPet");
@@ -38,14 +38,15 @@ namespace pet911_backend.Configurations
             builder.Property(x => x.Allergies)
                 .HasColumnType("TEXT");
 
-            builder
-                .Property(x => x.IdUser)
-                .IsRequired()
-                .HasColumnType("varchar(36)");
+            builder.Property(x => x.Notes)
+                .HasColumnType("TEXT");
 
-            builder.HasOne(x => x.user)
-                .WithMany(x => x.pets)
-                .HasForeignKey(x => x.IdUser);
+            builder.Property(x => x.Image)
+                .HasColumnType("TEXT");
+
+            builder.Property(x => x.Type)
+                .HasColumnType("varchar(100)");
+
         }
     }
 }

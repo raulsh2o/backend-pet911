@@ -1,5 +1,8 @@
-﻿namespace pet911_backend.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace pet911_backend.Models
 {
+    [Table("adopt")]
     public class Adopt
     {
         public string Id { get; set; }
